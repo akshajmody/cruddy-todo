@@ -26,11 +26,10 @@ exports.create = (text, callback) => {
 
 exports.readOne = (id, callback) => {
   
-  console.log('id', id);
   
   
   fs.readFile(`./datastore/data/${id}`, (err, fileData) => {
-    console.log('filedata: ', fileData);
+    //console.log('filedata: ', fileData);
     if (err) {
       callback(null, 0);
     } else {
@@ -63,13 +62,14 @@ exports.readAll = (callback) => {
 };
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    items[id] = text;
-    callback(null, {id: id, text: text});
-  }
+  console.log('id', id);
+  fs.writeFile(`./datastore/data/${id}`, text, (err) => {
+    if (err) {
+      throw ('error writing file');
+    } else {
+      callback(null, {id: id, text: text});
+    }
+  });
 };
 
 exports.delete = (id, callback) => {

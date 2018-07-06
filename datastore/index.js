@@ -25,12 +25,22 @@ exports.create = (text, callback) => {
 };
 
 exports.readOne = (id, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback(null, {id: id, text: item});
-  }
+  
+  console.log('id', id);
+  
+  
+  fs.readFile(`./datastore/data/${id}`, (err, fileData) => {
+    console.log('filedata: ', fileData);
+    if (err) {
+      callback(null, 0);
+    } else {
+      if (!fileData) {
+        callback(new Error(`No item with id: ${id}`));
+      } else {   
+        callback(null, {id: id, text: String(fileData)});
+      }   
+    }
+  });  
 };
 
 exports.readAll = (callback) => {

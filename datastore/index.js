@@ -35,10 +35,21 @@ exports.readOne = (id, callback) => {
 
 exports.readAll = (callback) => {
   var data = [];
-  _.each(items, (item, idx) => {
-    data.push({ id: idx, text: items[idx] });
+  // _.each(items, (item, idx) => {
+  //   data.push({ id: idx, text: items[idx] });
+  // });
+  
+  fs.readdir('./datastore/data/', function(err, files) {
+    if (err) {
+      throw ('error reading files');
+    } else {
+      files.forEach(function(fileName) {
+        data.push({ id: fileName, text: fileName });
+      });
+      callback(null, data);
+    }
   });
-  callback(null, data);
+  
 };
 
 exports.update = (id, text, callback) => {
